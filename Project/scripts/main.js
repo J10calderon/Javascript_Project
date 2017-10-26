@@ -33,43 +33,43 @@ function drawBall() {
  	ctx.clearRect(0, 0, canvas.width, canvas.height);
     this.canvas.style.cursor = "none";
 
- 	drawBall();
-    if (rightPressed == true && x < canvas.width-ballRadius-2) {
-    	xspeed = 3;
+ 	
+    if (rightPressed == true && x < canvas.width-ballRadius) {
+    	xspeed = 1;
     }
-    if (leftPressed == true && x > ballRadius+2) {
-    	xspeed = -3;
+    if (leftPressed == true && x > ballRadius) {
+    	xspeed = -1;
     }
-    if (upPressed == true && y > ballRadius && (y > canvas.height-ballRadius*2 + 8)) {
-    	this.yspeed = -3;
+    if (upPressed == true && y > ballRadius) {
+    	yspeed = -1;
     }
     
     if (downPressed == true && y < canvas.height-ballRadius) {
-    	this.yspeed = 3;
+    	yspeed = 1;
     }
+    drawBall();
     x += xspeed;
     y += yspeed;
-
+    xspeed = 0;
+    yspeed = 0;
 
     collisionDetection();
 
  }
 
  function collisionDetection(){
- 	if (y + speedY >= canvas.height - ballRadius){
+ 	if (y >= canvas.height - ballRadius){
  		y = canvas.height - ballRadius;
-        this.yspeed = 0;
+        yspeed = 0;
  	}
- 	else if (y + speedY <= ballRadius){
- 		this.yspeed = 0;
+ 	else if (y <= ballRadius){
+ 		yspeed = 0;
  	}
- 	else if (x + speedX >= canvas.width - ballRadius){
- 		speedX = 0;
-        this.xspeed = -this.xspeed;
+ 	else if (x >= canvas.width - ballRadius){
+        xspeed = 0;
  	}
- 	else if (x + speedX <= ballRadius){
- 		speedX = 0;
-        this.xspeed = -this.xspeed;
+ 	else if (x  <= ballRadius){
+        xspeed = 0;
  	}
 
  }
