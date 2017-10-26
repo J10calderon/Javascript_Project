@@ -4,13 +4,17 @@ var x = canvas.width/2;
 var y = canvas.height/2;
 var yspeed = 0;
 var xspeed = 0;
+var treeSize = 80;
 var ballRadius = 10;
+var treeColor = "#28B463";
 var ballColor = "#0095DD";
 var rightPressed = false;
 var leftPressed = false;
 var upPressed = false;
 var downPressed = false;
 var spacePressed = false;
+var numTrees = 4;
+var treePositions = [{x:15, y:15}, {x:75, y:75}, {x:35, y:35}, {x:45, y:65}];
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
@@ -25,6 +29,17 @@ function drawBall() {
     ctx.fill();
     ctx.closePath();
   }
+function drawTree(x, y){
+    // ctx.beginPath();
+    // ctx.arc(x, y, treeRadius, 0, Math.PI*2);
+    // ctx.fillStyle = treeColor;
+    // ctx.fill();
+    // ctx.closePath();
+
+    drawing = new Image(); 
+	drawing.src = "images/tree.png";
+	ctx.drawImage(drawing,x,y, treeSize, treeSize); //draw(image, x, y, width, height)
+}
 
  function draw(){
  	ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -45,6 +60,10 @@ function drawBall() {
     	yspeed = 1;
     }
     drawBall();
+    for (var i = 0; i < numTrees; i++){
+    	drawTree(treePositions[i].x, treePositions[i].y);
+    }
+    
     x += xspeed;
     y += yspeed;
     xspeed = 0;
