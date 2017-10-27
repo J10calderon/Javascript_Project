@@ -13,8 +13,9 @@ var leftPressed = false;
 var upPressed = false;
 var downPressed = false;
 var spacePressed = false;
-var numTrees = 4;
-var treePositions = [{x:15, y:15}, {x:75, y:75}, {x:35, y:35}, {x:45, y:65}];
+var charSize = 50;
+var orientation = 1;
+var treePositions = [];
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 // TODO: add var environment which holds tree/other environment info?
@@ -24,11 +25,20 @@ function randomColor() {
 }
 
 function drawBall() {
-    ctx.beginPath();
-    ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-    ctx.fillStyle = ballColor;
-    ctx.fill();
-    ctx.closePath();
+    // ctx.beginPath();
+    // ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+    // ctx.fillStyle = ballColor;
+    // ctx.fill();
+    // ctx.closePath();
+
+    drawing = new Image();
+    if (orientation == 0){
+		drawing.src = "images/butch_left.png";
+    } else{
+		drawing.src = "images/butch_right.png";
+    }
+
+	ctx.drawImage(drawing,x,y, charSize, charSize);
 }
 
 function drawTree(x, y){
@@ -39,13 +49,20 @@ function drawTree(x, y){
     // ctx.closePath();
 
     drawing = new Image();
-	drawing.src = "images/tree.png";
+	drawing.src = "images/tree_NL.png";
 	ctx.drawImage(drawing,x,y, treeSize, treeSize); //draw(image, x, y, width, height)
 }
 
 function draw() {
  	ctx.clearRect(0, 0, canvas.width, canvas.height);
     this.canvas.style.cursor = "none";
+
+    if (rightPressed){
+    	orientation = 1;
+	}
+	if (leftPressed){
+		orientation = 0;
+    }
 
     if (rightPressed && x < canvas.width-ballRadius) {
     	dx += 1;
@@ -60,7 +77,7 @@ function draw() {
     	dy += 1;
     }
     drawBall();
-    for (var i = 0; i < numTrees; i++){
+    for (var i = 0; i < treePositions.length; i++){
     	drawTree(treePositions[i].x, treePositions[i].y);
     }
     collisionDetection();
@@ -89,6 +106,19 @@ function draw() {
    }
  }
 
+function populateTrees(n){
+	minx = 1;
+	maxx = canvas.width;
+	miny = 1;
+	maxy = canvas.height;
+	for (var i = 0; i < n; i++){
+		treePositions.push({x:getRandomArbitrary(minx, maxx), y:getRandomArbitrary(miny, maxy)})
+	}
+
+}
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
 
 function keyDownHandler(e) {
     if (e.keyCode == 39) {
@@ -126,5 +156,5 @@ function keyUpHandler(e) {
     }
 }
 
-
+populateTrees(100);
 setInterval(draw, 10);
